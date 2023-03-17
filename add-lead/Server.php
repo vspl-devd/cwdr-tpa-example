@@ -28,12 +28,14 @@ $body = $_POST['leadData'];
 // Prepare Request with headers
 $request = new \GuzzleHttp\Psr7\Request('POST', '?r=tpi/add-lead', $headers, json_encode($body));
 $result = ['status' => 'ERR', 'message' => ''];
+$respStatus = 500;
 try {
 // Process Response
     $response = $client->send($request);
     $respStatus = $response->getStatusCode();
 } catch (\GuzzleHttp\Exception\ClientException $ex) {
     $result['message'] = $ex->getResponse();
+    $respStatus = $ex->getResponse()->getStatusCode();
 } catch (GuzzleHttp\Exception\TransferException $ex) {
     $result['message'] = $ex->getMessage();
 }
